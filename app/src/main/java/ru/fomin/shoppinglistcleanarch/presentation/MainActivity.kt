@@ -2,12 +2,14 @@ package ru.fomin.shoppinglistcleanarch.presentation
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.fomin.shoppinglistcleanarch.R
+import ru.fomin.shoppinglistcleanarch.domain.ShopItem
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +30,5 @@ class MainActivity : AppCompatActivity() {
         viewModel.shopListLiveData.observe(this) { shopList ->
             Log.d(TAG, shopList.toString())
         }
-
-        viewModel.getShopList()
     }
 }
