@@ -3,7 +3,7 @@ package ru.fomin.shoppinglistcleanarch.data
 import ru.fomin.shoppinglistcleanarch.domain.ShopItem
 import ru.fomin.shoppinglistcleanarch.domain.ShopListRepository
 
-class ShopListRepositoryImpl: ShopListRepository {
+object ShopListRepositoryImpl: ShopListRepository {
 
     private val shopList = mutableListOf<ShopItem>()
 
