@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "ru.fomin.shoppinglistcleanarch"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "ru.fomin.shoppinglistcleanarch"
