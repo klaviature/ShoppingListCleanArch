@@ -7,7 +7,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import ru.fomin.shoppinglistcleanarch.R
 import ru.fomin.shoppinglistcleanarch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
 
-    private lateinit var adapter: ShopListAdapter
+    private lateinit var shopListAdapter: ShopListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +33,16 @@ class MainActivity : AppCompatActivity() {
         setupAdapter()
         viewModel.shopListLiveData.observe(this) { shopList ->
             Log.d(TAG, shopList.toString())
-            adapter.shopList = shopList
+            shopListAdapter.shopList = shopList
         }
     }
 
     private fun setupAdapter() {
-        adapter = ShopListAdapter()
-        binding.shopListRecyclerView.adapter = adapter
+        shopListAdapter = ShopListAdapter()
+        with(binding.shopListRecyclerView) {
+            adapter = shopListAdapter
+            recycledViewPool.setMaxRecycledViews(ShopListAdapter.VIEW_TYPE_ENABLED, ShopListAdapter.MAX_VIEW_POOL)
+            recycledViewPool.setMaxRecycledViews(ShopListAdapter.VIEW_TYPE_DISABLED, ShopListAdapter.MAX_VIEW_POOL)
+        }
     }
 }
