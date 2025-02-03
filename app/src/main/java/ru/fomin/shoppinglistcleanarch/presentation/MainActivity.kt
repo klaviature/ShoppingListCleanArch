@@ -7,6 +7,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import ru.fomin.shoppinglistcleanarch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupAdapter() {
         shopListAdapter = ShopListAdapter()
+
         with(binding.shopListRecyclerView) {
             adapter = shopListAdapter
             recycledViewPool.setMaxRecycledViews(
@@ -50,8 +53,43 @@ class MainActivity : AppCompatActivity() {
                 ShopListAdapter.MAX_VIEW_POOL
             )
         }
-        shopListAdapter.onShopItemClickListener = { shopItem ->
+
+        setupShopItemClickListener()
+
+        setupShopItemLongClickListener()
+
+        setupSwipeListener()
+    }
+
+    private fun setupSwipeListener() {
+        val itemTouchHelperCallback =
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return true
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val shopItem = shopListAdapter.shopList[viewHolder.adapterPosition]
+                    viewModel.deleteShopItem(shopItem)
+                }
+            }
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(binding.shopListRecyclerView)
+    }
+
+    private fun setupShopItemLongClickListener() {
+        shopListAdapter.onShopItemLongClickListener = { shopItem ->
             viewModel.toggleShopItemEnabled(shopItem)
+        }
+    }
+
+    private fun setupShopItemClickListener() {
+        shopListAdapter.onShopItemClickListener = { shopItem ->
+            Log.d("MainActivity", shopItem.toString())
         }
     }
 }

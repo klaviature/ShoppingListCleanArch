@@ -1,6 +1,5 @@
 package ru.fomin.shoppinglistcleanarch.presentation
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.fomin.shoppinglistcleanarch.R
 import ru.fomin.shoppinglistcleanarch.domain.ShopItem
+
+typealias OnShopItemLongClickListener = (ShopItem) -> Unit
 
 typealias OnShopItemClickListener = (ShopItem) -> Unit
 
@@ -31,6 +32,8 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
         val nameTextView: TextView = view.findViewById<TextView>(R.id.shopItemNameTextView)
         val countTextView: TextView = view.findViewById<TextView>(R.id.shopItemCountTextView)
     }
+
+    var onShopItemLongClickListener: OnShopItemLongClickListener? = null
 
     var onShopItemClickListener: OnShopItemClickListener? = null
 
@@ -64,8 +67,11 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
         }
         holder.nameTextView.text = "${shopItem.name} ($status)"
         holder.countTextView.text = String.format(shopItem.count.toString())
-        holder.view.setOnLongClickListener {
+        holder.view.setOnClickListener {
             onShopItemClickListener?.invoke(shopItem)
+        }
+        holder.view.setOnLongClickListener {
+            onShopItemLongClickListener?.invoke(shopItem)
             true
         }
     }
