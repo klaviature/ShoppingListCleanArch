@@ -41,8 +41,17 @@ class MainActivity : AppCompatActivity() {
         shopListAdapter = ShopListAdapter()
         with(binding.shopListRecyclerView) {
             adapter = shopListAdapter
-            recycledViewPool.setMaxRecycledViews(ShopListAdapter.VIEW_TYPE_ENABLED, ShopListAdapter.MAX_VIEW_POOL)
-            recycledViewPool.setMaxRecycledViews(ShopListAdapter.VIEW_TYPE_DISABLED, ShopListAdapter.MAX_VIEW_POOL)
+            recycledViewPool.setMaxRecycledViews(
+                ShopListAdapter.VIEW_TYPE_ENABLED,
+                ShopListAdapter.MAX_VIEW_POOL
+            )
+            recycledViewPool.setMaxRecycledViews(
+                ShopListAdapter.VIEW_TYPE_DISABLED,
+                ShopListAdapter.MAX_VIEW_POOL
+            )
+        }
+        shopListAdapter.onShopItemClickListener = { shopItem ->
+            viewModel.toggleShopItemEnabled(shopItem)
         }
     }
 }

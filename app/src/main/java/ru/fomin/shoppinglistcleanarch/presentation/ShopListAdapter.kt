@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.fomin.shoppinglistcleanarch.R
 import ru.fomin.shoppinglistcleanarch.domain.ShopItem
 
+typealias OnShopItemClickListener = (ShopItem) -> Unit
+
 class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
 
     companion object {
@@ -18,11 +20,19 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
         const val MAX_VIEW_POOL = 20
     }
 
+    var shopList = listOf<ShopItem>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     inner class ShopItemViewHolder(val view: View) :
         RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById<TextView>(R.id.shopItemNameTextView)
         val countTextView: TextView = view.findViewById<TextView>(R.id.shopItemCountTextView)
     }
+
+    var onShopItemClickListener: OnShopItemClickListener? = null
 
     override fun getItemViewType(position: Int): Int {
         val item = shopList[position]
@@ -33,18 +43,9 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
         }
     }
 
-    var shopList = listOf<ShopItem>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    private var count = 0
-
     override fun getItemCount(): Int = shopList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
-        Log.d("ShopListAdapter", "Count: ${++count}")
         val layout = when (viewType) {
             VIEW_TYPE_ENABLED -> R.layout.item_shop_enabled
             VIEW_TYPE_DISABLED -> R.layout.item_shop_disabled
@@ -64,6 +65,7 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
         holder.nameTextView.text = "${shopItem.name} ($status)"
         holder.countTextView.text = String.format(shopItem.count.toString())
         holder.view.setOnLongClickListener {
+            onShopItemClickListener?.invoke(shopItem)
             true
         }
     }
