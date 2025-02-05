@@ -1,4 +1,4 @@
-package ru.fomin.shoppinglistcleanarch.presentation
+package ru.fomin.shoppinglistcleanarch.presentation.main
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.fomin.shoppinglistcleanarch.R
 import ru.fomin.shoppinglistcleanarch.domain.ShopItem
+import ru.fomin.shoppinglistcleanarch.presentation.ShopItemDiffCallback
 
 class ShopListAdapter :
     ListAdapter<ShopItem, ShopListAdapter.ShopItemViewHolder>(ShopItemDiffCallback()) {

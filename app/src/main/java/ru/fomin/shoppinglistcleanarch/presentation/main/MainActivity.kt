@@ -1,4 +1,4 @@
-package ru.fomin.shoppinglistcleanarch.presentation
+package ru.fomin.shoppinglistcleanarch.presentation.main
 
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ru.fomin.shoppinglistcleanarch.databinding.ActivityMainBinding
+import ru.fomin.shoppinglistcleanarch.presentation.shopitem.ShopItemActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,6 +37,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.shopListLiveData.observe(this) { shopList ->
             Log.d(TAG, shopList.toString())
             shopListAdapter.submitList(shopList)
+        }
+
+        binding.addShopItemButton.setOnClickListener {
+            val intent = ShopItemActivity.newIntentAddSHopItem(this)
+            startActivity(intent)
         }
     }
 
@@ -90,6 +96,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupShopItemClickListener() {
         shopListAdapter.onShopItemClickListener = { shopItem ->
             Log.d("MainActivity", shopItem.toString())
+            val intent = ShopItemActivity.newIntentEditShopItem(this, shopItem.id)
+            startActivity(intent)
         }
     }
 }

@@ -1,7 +1,5 @@
-package ru.fomin.shoppinglistcleanarch.presentation
+package ru.fomin.shoppinglistcleanarch.presentation.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.fomin.shoppinglistcleanarch.data.ShopListRepositoryImpl
 import ru.fomin.shoppinglistcleanarch.domain.DeleteShopItemUseCase
