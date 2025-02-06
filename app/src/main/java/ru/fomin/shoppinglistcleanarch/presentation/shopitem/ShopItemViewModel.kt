@@ -20,11 +20,11 @@ class ShopItemViewModel : ViewModel() {
     private val _shopItemLiveData = MutableLiveData<ShopItem>()
     val shopItemLiveData: LiveData<ShopItem> get() = _shopItemLiveData
 
-    private val _nameFieldErrorLiveData = MutableLiveData<String>()
-    val nameFieldErrorLiveData: LiveData<String> get() = _nameFieldErrorLiveData
+    private val _nameFieldErrorLiveData = MutableLiveData(false)
+    val nameFieldErrorLiveData: LiveData<Boolean> get() = _nameFieldErrorLiveData
 
-    private val _countFieldErrorLiveData = MutableLiveData<String>()
-    val countFieldErrorLiveData: LiveData<String> get() = _countFieldErrorLiveData
+    private val _countFieldErrorLiveData = MutableLiveData(false)
+    val countFieldErrorLiveData: LiveData<Boolean> get() = _countFieldErrorLiveData
 
     private val _shouldCloseScreenLiveData = MutableLiveData<Unit>()
     val shouldCloseScreenLiveData: LiveData<Unit> = _shouldCloseScreenLiveData
@@ -58,6 +58,14 @@ class ShopItemViewModel : ViewModel() {
         }
     }
 
+    fun clearNameFieldError() {
+        _nameFieldErrorLiveData.value = false
+    }
+
+    fun clearCountFieldError() {
+        _countFieldErrorLiveData.value = false
+    }
+
     private fun parseName(inputName: String?): String {
         return inputName?.trim() ?: ""
     }
@@ -69,11 +77,11 @@ class ShopItemViewModel : ViewModel() {
     private fun validateInput(name: String, count: Int): Boolean {
         var isValid = true
         if (name.isBlank()) {
-            _nameFieldErrorLiveData.postValue("Name is invalid")
+            _nameFieldErrorLiveData.postValue(true)
             isValid = false
         }
         if (count <= 0) {
-            _countFieldErrorLiveData.postValue("Count is invalid")
+            _countFieldErrorLiveData.postValue(true)
             isValid = false
         }
         return isValid
