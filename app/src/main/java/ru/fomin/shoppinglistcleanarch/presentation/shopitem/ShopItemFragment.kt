@@ -1,4 +1,4 @@
-package ru.fomin.shoppinglistcleanarch.presentation.main
+package ru.fomin.shoppinglistcleanarch.presentation.shopitem
 
 import android.os.Bundle
 import android.view.LayoutInflater
