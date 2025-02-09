@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupAdapter() {
         shopListAdapter = ShopListAdapter()
-
         with(binding.shopListRecyclerView) {
             adapter = shopListAdapter
             recycledViewPool.setMaxRecycledViews(
@@ -59,11 +58,8 @@ class MainActivity : AppCompatActivity() {
                 ShopListAdapter.MAX_VIEW_POOL
             )
         }
-
         setupShopItemClickListener()
-
         setupShopItemLongClickListener()
-
         setupSwipeListener()
     }
 
@@ -95,7 +91,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupShopItemClickListener() {
         shopListAdapter.onShopItemClickListener = { shopItem ->
-            Log.d("MainActivity", shopItem.toString())
             val intent = ShopItemActivity.newIntentEditShopItem(this, shopItem.id)
             startActivity(intent)
         }
