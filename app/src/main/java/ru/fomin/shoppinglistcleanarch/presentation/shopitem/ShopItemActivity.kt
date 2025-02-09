@@ -55,7 +55,9 @@ class ShopItemActivity : AppCompatActivity() {
             insets
         }
         parseIntent()
-        launchRightMode()
+        if (savedInstanceState == null) {
+            launchRightMode()
+        }
     }
 
     private fun parseIntent() {
