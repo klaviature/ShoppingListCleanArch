@@ -1,10 +1,14 @@
 package ru.fomin.shoppinglistcleanarch.domain
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "shop_items")
 data class ShopItem(
     val name: String,
     val count: Int,
     val enabled: Boolean,
-    var id: Int = UNDEFINED_ID
+    @PrimaryKey var id: Int = UNDEFINED_ID
 ) {
 
     companion object {
