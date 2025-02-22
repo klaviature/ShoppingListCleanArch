@@ -1,5 +1,6 @@
 package ru.fomin.shoppinglistcleanarch.presentation.shopitem
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -42,10 +43,11 @@ class ShopItemFragment : Fragment() {
         }
     }
 
+    private var TAG = "ShopItemFragment"
+
     private lateinit var viewModel: ShopItemViewModel
 
-    private var _binding: FragmentShopItemBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentShopItemBinding
 
     // Depending on the screen mode, set in the addMode() and editMode() methods, and subsequently
     // called in the click listener at the button.
@@ -57,6 +59,7 @@ class ShopItemFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseParams()
+        Log.d(TAG, "onCreate")
     }
 
     override fun onCreateView(
@@ -64,19 +67,14 @@ class ShopItemFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("ShopItemFragment", "The view has been created")
-        _binding = FragmentShopItemBinding.inflate(inflater, container, false)
+        Log.d(TAG, "onCreateView")
+        binding = FragmentShopItemBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }
 
-    override fun onDestroyView() {
-        Log.d("ShopItemFragment", "The view has been destroyed")
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG, "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
         launchRightMode()
@@ -103,7 +101,7 @@ class ShopItemFragment : Fragment() {
     }
 
     private fun launchRightMode() {
-        when(instanceMode) {
+        when (instanceMode) {
             INSTANCE_MODE_ADD -> addMode()
             INSTANCE_MODE_EDIT -> editMode()
         }

@@ -81,7 +81,7 @@ class ShopItemActivity : AppCompatActivity() {
         val fragment = when (screenMode) {
             SCREEN_MODE_ADD -> ShopItemFragment.newInstanceAddShopItem()
             SCREEN_MODE_EDIT -> ShopItemFragment.newInstanceEditShopItem(shopItemId)
-            else -> throw RuntimeException("Unknown EXTRA_INSTANCE_MODE parameter.")
+            else -> throw RuntimeException("Unknown EXTRA_INSTANCE_MODE parameter: $screenMode")
         }
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_shop_item_container, fragment)

@@ -23,11 +23,11 @@
         android:id="@+id/addShopItemButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:backgroundTint="@color/light_green"
         android:contentDescription="@string/add_new_shop_item"
         android:src="@android:drawable/ic_input_add"
         app:elevation="4dp"
+        android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
