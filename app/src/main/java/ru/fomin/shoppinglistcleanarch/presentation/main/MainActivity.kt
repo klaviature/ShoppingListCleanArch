@@ -7,10 +7,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import ru.fomin.shoppinglistcleanarch.R
 import ru.fomin.shoppinglistcleanarch.databinding.ActivityMainBinding
 import ru.fomin.shoppinglistcleanarch.presentation.shopitem.ShopItemActivity
+import ru.fomin.shoppinglistcleanarch.presentation.shopitem.ShopItemFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
 
     private lateinit var shopListAdapter: ShopListAdapter
+
+    private var shopItemContainer: FragmentContainerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +39,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        shopItemContainer = binding.fragmentShopItemContainer
+
         setupAdapter()
         viewModel.shopListLiveData.observe(this) { shopList ->
             Log.d(TAG, shopList.toString())
@@ -40,14 +48,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.addShopItemButton.setOnClickListener {
-            val intent = ShopItemActivity.newIntentAddSHopItem(this)
-            startActivity(intent)
+            if (isPortraitOrientation()) {
+                val intent = ShopItemActivity.newIntentAddSHopItem(this)
+                startActivity(intent)
+            } else {
+                launchFragment(ShopItemFragment.newInstanceAddShopItem())
+            }
         }
     }
 
     private fun setupAdapter() {
         shopListAdapter = ShopListAdapter()
-
         with(binding.shopListRecyclerView) {
             adapter = shopListAdapter
             recycledViewPool.setMaxRecycledViews(
@@ -59,11 +70,8 @@ class MainActivity : AppCompatActivity() {
                 ShopListAdapter.MAX_VIEW_POOL
             )
         }
-
         setupShopItemClickListener()
-
         setupShopItemLongClickListener()
-
         setupSwipeListener()
     }
 
@@ -95,9 +103,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupShopItemClickListener() {
         shopListAdapter.onShopItemClickListener = { shopItem ->
-            Log.d("MainActivity", shopItem.toString())
-            val intent = ShopItemActivity.newIntentEditShopItem(this, shopItem.id)
-            startActivity(intent)
+            if (isPortraitOrientation()) {
+                val intent = ShopItemActivity.newIntentEditShopItem(this, shopItem.id)
+                startActivity(intent)
+            } else {
+                launchFragment(ShopItemFragment.newInstanceEditShopItem(shopItem.id))
+            }
         }
+    }
+
+    private fun isPortraitOrientation(): Boolean {
+        return shopItemContainer == null
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        supportFragmentManager.popBackStack()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_shop_item_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
