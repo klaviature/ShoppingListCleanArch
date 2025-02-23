@@ -59,7 +59,6 @@ class ShopItemFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseParams()
-        Log.d(TAG, "onCreate")
     }
 
     override fun onCreateView(
@@ -67,14 +66,12 @@ class ShopItemFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG, "onCreateView")
         binding = FragmentShopItemBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d(TAG, "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
         launchRightMode()
