@@ -1,62 +1,57 @@
 package ru.fomin.shoppinglistcleanarch.data
 
+import android.content.Context
+import androidx.lifecycle.ComputableLiveData
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import ru.fomin.shoppinglistcleanarch.domain.ShopItem
 import ru.fomin.shoppinglistcleanarch.domain.ShopListRepository
 import kotlin.random.Random
 
-object ShopListRepositoryImpl: ShopListRepository {
+class ShopListRepositoryImpl(context: Context) : ShopListRepository {
 
-    private val shopList = mutableListOf<ShopItem>()
+    private val shopItemDao = ShopItemDatabase.getInstance(context).shopItemDao()
 
-    private val shopListLiveData = MutableLiveData<List<ShopItem>>()
-
-    init {
-        val items = mutableListOf<ShopItem>()
-        for (i in 1..100) {
-            items.add(
-                ShopItem("Name $i", i, Random.nextBoolean())
-            )
-        }
-        items.forEach { shopItem ->
-            addShopItem(shopItem)
-        }
-    }
-
-    private var autoIncrementId = 0
-
-    override fun addShopItem(shopItem: ShopItem) {
-        if (shopItem.id == ShopItem.UNDEFINED_ID) {
-            shopItem.id = autoIncrementId++
-        }
-        shopList.add(shopItem)
-        updateLiveData()
+    override fun addShopItem(shopItem: ShopItem): Completable {
+        return shopItemDao.addShopItem(shopItem.toShopItemEntity())
     }
 
     override fun getShopList(): LiveData<List<ShopItem>> {
-        return shopListLiveData
+        return shopItemDao.getAll().map { shopItemEntities ->
+            shopItemEntities.map { it.toShopItem() }
+        }
     }
 
-    override fun getShopItem(shopItemId: Int): ShopItem {
-        return shopList.find {
-            it.id == shopItemId
-        } ?: throw RuntimeException("Element with ID: $shopItemId was not found!")
+    override fun getShopItem(shopItemId: Int): Single<ShopItem> {
+        return shopItemDao.getShopItem(shopItemId).map { it.toShopItem() }
     }
 
-    override fun editShopItem(shopItem: ShopItem) {
-        val oldItem = getShopItem(shopItem.id)
-        val shopItemIndex = shopList.indexOf(oldItem)
-        shopList[shopItemIndex] = shopItem
-        updateLiveData()
+    override fun editShopItem(shopItem: ShopItem): Completable {
+        return shopItemDao.updateShopItem(shopItem.toShopItemEntity())
     }
 
-    override fun deleteShopItem(shopItem: ShopItem) {
-        shopList.remove(shopItem)
-        updateLiveData()
+    override fun deleteShopItem(shopItem: ShopItem): Completable {
+        return shopItemDao.deleteShopItem(shopItem.toShopItemEntity())
     }
 
-    private fun updateLiveData() {
-        shopListLiveData.postValue(shopList.toList())
+    private fun ShopItem.toShopItemEntity(): ShopItemEntity {
+        return ShopItemEntity(
+            name = this.name,
+            count = this.count,
+            enabled = this.enabled,
+            id = if (this.id != ShopItem.UNDEFINED_ID) this.id else null
+        )
+    }
+
+    private fun ShopItemEntity.toShopItem(): ShopItem {
+        return ShopItem(
+            name = this.name,
+            count = this.count,
+            enabled = this.enabled,
+            id = this.id ?: ShopItem.UNDEFINED_ID
+        )
     }
 }
