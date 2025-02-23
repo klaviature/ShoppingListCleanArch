@@ -1,12 +1,9 @@
 package ru.fomin.shoppinglistcleanarch.presentation.main
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.fomin.shoppinglistcleanarch.data.ShopListRepositoryImpl
 import ru.fomin.shoppinglistcleanarch.domain.DeleteShopItemUseCase

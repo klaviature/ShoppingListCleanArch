@@ -1,15 +1,12 @@
 package ru.fomin.shoppinglistcleanarch.data
 
 import android.content.Context
-import androidx.lifecycle.ComputableLiveData
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import ru.fomin.shoppinglistcleanarch.domain.ShopItem
 import ru.fomin.shoppinglistcleanarch.domain.ShopListRepository
-import kotlin.random.Random
 
 class ShopListRepositoryImpl(context: Context) : ShopListRepository {
 
