@@ -48,6 +48,7 @@
         android:layout_margin="16dp"
         android:text="@string/done"
         app:icon="@drawable/check_svgrepo_com"
+        android:backgroundTint="@color/green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
