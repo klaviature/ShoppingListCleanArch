@@ -1,5 +1,6 @@
 package ru.fomin.shoppinglistcleanarch.domain
 
+
 data class ShopItem(
     val name: String,
     val count: Int,
