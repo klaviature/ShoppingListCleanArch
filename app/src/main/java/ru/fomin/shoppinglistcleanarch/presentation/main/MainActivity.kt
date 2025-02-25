@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         shopItemContainer = binding.fragmentShopItemContainer
 
         setupAdapter()
-        viewModel.shopListLiveData.observe(this) { shopList ->
+        viewModel.shopList.observe(this) { shopList ->
             Log.d(TAG, shopList.toString())
             shopListAdapter.submitList(shopList)
         }

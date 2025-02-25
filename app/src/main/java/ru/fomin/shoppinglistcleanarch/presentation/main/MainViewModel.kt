@@ -21,7 +21,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val editShopItemUseCase = EditShopItemUseCase(repository)
 
-    val shopListLiveData = getShopListUseCase.getShopList()
+    val shopList = getShopListUseCase.getShopList()
 
     private val compositeDisposable = CompositeDisposable()
 

@@ -22,17 +22,17 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
     private val addShopItemUseCase = AddShopItemUseCase(repository)
     private val editShopItemUseCase = EditShopItemUseCase(repository)
 
-    private val _shopItemLiveData = MutableLiveData<ShopItem>()
-    val shopItemLiveData: LiveData<ShopItem> get() = _shopItemLiveData
+    private val _shopItem = MutableLiveData<ShopItem>()
+    val shopItem: LiveData<ShopItem> get() = _shopItem
 
-    private val _nameFieldErrorLiveData = MutableLiveData(false)
-    val nameFieldErrorLiveData: LiveData<Boolean> get() = _nameFieldErrorLiveData
+    private val _nameFieldError = MutableLiveData(false)
+    val nameFieldError: LiveData<Boolean> get() = _nameFieldError
 
-    private val _countFieldErrorLiveData = MutableLiveData(false)
-    val countFieldErrorLiveData: LiveData<Boolean> get() = _countFieldErrorLiveData
+    private val _countFieldError = MutableLiveData(false)
+    val countFieldError: LiveData<Boolean> get() = _countFieldError
 
-    private val _shouldCloseScreenLiveData = MutableLiveData<Unit>()
-    val shouldCloseScreenLiveData: LiveData<Unit> = _shouldCloseScreenLiveData
+    private val _shouldCloseScreen = MutableLiveData<Unit>()
+    val shouldCloseScreen: LiveData<Unit> = _shouldCloseScreen
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -41,7 +41,7 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
-                _shopItemLiveData.postValue(it)
+                _shopItem.postValue(it)
             }
             .doOnError {
                 Log.d("ShopItemViewModel", it.message.toString())
@@ -60,7 +60,7 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete {
-                    _shouldCloseScreenLiveData.postValue(Unit)
+                    _shouldCloseScreen.postValue(Unit)
                 }
                 .doOnError {
                     Log.d("ShopItemViewModel", it.message.toString())
@@ -75,13 +75,13 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
         val count = parseCount(inputCount)
         val validateResult = validateInput(name, count)
         if (validateResult) {
-            _shopItemLiveData.value?.let {
+            _shopItem.value?.let {
                 val shopItem = it.copy(name = name, count = count)
                 val disposable = editShopItemUseCase.editShopItem(shopItem)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnComplete {
-                        _shouldCloseScreenLiveData.postValue(Unit)
+                        _shouldCloseScreen.postValue(Unit)
                     }
                     .subscribe()
                 compositeDisposable.add(disposable)
@@ -95,11 +95,11 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun clearNameFieldError() {
-        _nameFieldErrorLiveData.value = false
+        _nameFieldError.value = false
     }
 
     fun clearCountFieldError() {
-        _countFieldErrorLiveData.value = false
+        _countFieldError.value = false
     }
 
     private fun parseName(inputName: String?): String {
@@ -113,11 +113,11 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
     private fun validateInput(name: String, count: Int): Boolean {
         var isValid = true
         if (name.isBlank()) {
-            _nameFieldErrorLiveData.postValue(true)
+            _nameFieldError.postValue(true)
             isValid = false
         }
         if (count <= 0) {
-            _countFieldErrorLiveData.postValue(true)
+            _countFieldError.postValue(true)
             isValid = false
         }
         return isValid

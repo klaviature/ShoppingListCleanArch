@@ -113,7 +113,7 @@ class ShopItemFragment : Fragment() {
             viewModel.editShopItem(name, count)
         }
         viewModel.getShopItem(shopItemId)
-        viewModel.shopItemLiveData.observe(viewLifecycleOwner) { shopItem ->
+        viewModel.shopItem.observe(viewLifecycleOwner) { shopItem ->
             setNameToEditText(shopItem.name)
             setCountToEditText(shopItem.count.toString())
         }
@@ -152,7 +152,7 @@ class ShopItemFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.nameFieldErrorLiveData.observe(viewLifecycleOwner) { errorMessage ->
+        viewModel.nameFieldError.observe(viewLifecycleOwner) { errorMessage ->
             binding.shopItemNameTextField.error = if (errorMessage) {
                 getString(R.string.invalid_name)
             } else {
@@ -160,7 +160,7 @@ class ShopItemFragment : Fragment() {
             }
         }
 
-        viewModel.countFieldErrorLiveData.observe(viewLifecycleOwner) { errorMessage ->
+        viewModel.countFieldError.observe(viewLifecycleOwner) { errorMessage ->
             binding.shopItemCountTextField.error = if (errorMessage) {
                 getString(R.string.invalid_count)
             } else {
@@ -168,7 +168,7 @@ class ShopItemFragment : Fragment() {
             }
         }
 
-        viewModel.shouldCloseScreenLiveData.observe(viewLifecycleOwner) {
+        viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
             activity?.onBackPressedDispatcher?.onBackPressed()
         }
     }
