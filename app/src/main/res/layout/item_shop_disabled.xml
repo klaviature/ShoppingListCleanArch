@@ -26,10 +26,17 @@
             android:textSize="18sp"
             tools:text="Tomatoes" />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider" />
+
         <TextView
             android:id="@+id/shopItemCountTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:maxLines="1"
             android:textColor="@color/light_gray"
             android:textSize="18sp"

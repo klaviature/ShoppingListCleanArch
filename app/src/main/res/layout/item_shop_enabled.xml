@@ -5,8 +5,8 @@
     style="?attr/materialCardViewElevatedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="2dp"
     android:backgroundTint="@color/very_light_green"
+    app:cardElevation="2dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -25,10 +25,17 @@
             android:textSize="18sp"
             tools:text="Tomatoes" />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider" />
+
         <TextView
             android:id="@+id/shopItemCountTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:maxLines="1"
             android:textSize="18sp"
             android:textStyle="bold"
