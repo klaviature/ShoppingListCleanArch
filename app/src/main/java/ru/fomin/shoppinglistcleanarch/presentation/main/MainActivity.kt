@@ -42,10 +42,7 @@ class MainActivity : AppCompatActivity() {
         shopItemContainer = binding.fragmentShopItemContainer
 
         setupAdapter()
-        viewModel.shopList.observe(this) { shopList ->
-            Log.d(TAG, shopList.toString())
-            shopListAdapter.submitList(shopList)
-        }
+        observeViewModel()
 
         binding.addShopItemButton.setOnClickListener {
             if (isPortraitOrientation()) {
@@ -109,6 +106,13 @@ class MainActivity : AppCompatActivity() {
             } else {
                 launchFragment(ShopItemFragment.newInstanceEditShopItem(shopItem.id))
             }
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.shopList.observe(this) { shopList ->
+            Log.d(TAG, shopList.toString())
+            shopListAdapter.submitList(shopList)
         }
     }
 
